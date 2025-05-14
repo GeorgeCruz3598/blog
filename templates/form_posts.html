@@ -1,0 +1,27 @@
+{% extends 'base2.html' %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header">
+        <h2>
+            {% if post %} Editar {% else %} Nuevo {% endif %} POST
+        </h2>
+    </div>
+    <div class="card-body">
+        <form action="" method="POST">
+        <div class="mb-3">
+            <label for="" class="form-label">TITULO</label>
+            <input type="text" class="form-control" name="titulo" 
+            value="{{ post.title if post else '' }}" required>
+        </div>
+        <div class="mb-3">
+            <label for="" class="form-label">CONTENIDO</label>
+            <textarea class="form-control" name="contenido" rows="4">{{ post.content if post else '' }}</textarea> 
+        </div>
+        
+        <button class=" btn btn-primary" type="submit">Enviar</button>
+        </form>
+    </div>
+</div>
+
+{% endblock %}

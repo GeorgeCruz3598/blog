@@ -30,6 +30,7 @@ def init_db():
     conn.execute('''
     create table if not exists posts(
       id integer primary key autoincrement,
+      title text not null,
       content text not null,
       user_id integer not null,
       created_at date default (date('now')),
@@ -114,12 +115,6 @@ def login():
             flash('Credenciales no validas','danger')
     return render_template('login.html')
 
-#dashboard
-@app.route('/dashboard')
-@login_required #protected -> require logged in to go this route
-def dashboard():
-    return render_template('dashboard.html',username=current_user.username)
-
 #logout
 @app.route('/logout')
 @login_required
@@ -128,7 +123,63 @@ def logout():
     flash('Has cerrado session','info')
     return redirect(url_for('inicio'))
 
+#dashboard
+@app.route('/dashboard')
+@login_required #protected -> require logged in to go this route
+def dashboard():
+    conn = get_db_connection()
+    posts = conn.execute("""select * from posts""").fetchall()
+    conn.close()
+    return render_template('dashboard.html',username=current_user.username, posts=posts)
+
+#new
+@app.route('/dashboard/nuevo',methods=['GET','POST'])
+def nuevo_post():
+    conn = get_db_connection()
+    if request.method =='POST':
+        user_id = current_user.id
+        titulo = request.form['titulo']
+        contenido = request.form['contenido']
+        conn.execute("insert into posts(title, content, user_id) values(?,?,?)",(titulo, contenido, user_id))
+        conn.commit()
+        conn.close()
+        flash('POst adicionada','success')
+        return redirect(url_for('dashboard'))
+    conn.close()
+    return render_template('form_posts.html')
+
+#edit
+@app.route('/dashboard/editar/<int:id>', methods=['POST','GET'])
+def editar_post(id):
+    conn = get_db_connection()
+    post = conn.execute("select * from posts where id = ?",(id,)).fetchone() #retrieve only one row for the selected ID
+    
+    if request.method == 'POST':
+        titulo = request.form['titulo']
+        contenido = request.form['contenido']
+        conn.execute('update posts set title=?,content=? where id=?',(titulo,contenido,id))
+        conn.commit()
+        conn.close()
+        flash('POst actualizado','success')
+        return redirect(url_for('dashboard'))
+    return render_template('form_posts.html',post=post)
+
+#delete
+@app.route('/dashboard/eliminar/<int:id>', methods=['POST','GET'])
+def eliminar_post(id):
+    conn = get_db_connection()
+    conn.execute("delete from posts where id = ?",(id,))
+    conn.commit()
+    conn.close()
+    flash('Registro eliminado correctamente','success')
+    return redirect(url_for('dashboard'))
+
+    
+
 if __name__=="__main__":
     init_db()
+    
     app.run(debug=True)
-     
+
+
+  
