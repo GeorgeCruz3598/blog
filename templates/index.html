@@ -12,9 +12,9 @@
 </div>
 </div>
 
-<div class="container justify-content-center" style="display: inline-block;">
+<div class="container">
 {%for item in posts%}
-<div class="card" style="width: 350px">
+<div class="card m-auto w-50 d-inline" style="width: 350px">
     <div class="card-header">
         <h1>{{item.title}}</h1>
     </div>
@@ -23,7 +23,7 @@
             AUTOR: {{item.username}}<br>
             FECHA: {{item.created_at}}<br>
         </h2>
-        <h2 class="card-body">
+        <h2 class="card-text">
             Contenido:<br>
             {{item.content}}
         </h2>

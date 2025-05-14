@@ -134,7 +134,8 @@ def logout():
 @login_required #protected -> require logged in to go this route
 def dashboard():
     conn = get_db_connection()
-    posts = conn.execute("""select * from posts""").fetchall()
+    posts = conn.execute("""select p.id, u.username, p.title, p.content, p.created_at from users as u join posts as p 
+                            on u.id = p.user_id""").fetchall()
     conn.close()
     return render_template('dashboard.html',username=current_user.username, posts=posts)
 
