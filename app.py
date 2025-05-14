@@ -1,3 +1,4 @@
+from turtle import pos
 from flask import Flask, render_template, request, flash, redirect, make_response, url_for
 from flask_login import LoginManager, login_user, logout_user, login_required, UserMixin, current_user
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -76,7 +77,12 @@ def load_user(user_id):
 #INICIO
 @app.route("/")
 def inicio():
-    return render_template('index.html')
+    conn = get_db_connection()
+    posts = conn.execute(""" select p.id, u.username, p.title, p.content, p.created_at from users as u join posts as p 
+                            on u.id = p.user_id""").fetchall()
+    conn.close()
+    return render_template('index.html', posts=posts)
+
 
 #REGISTRO DE USUARIOS
 @app.route('/register', methods=['GET','POST'])

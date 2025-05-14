@@ -12,4 +12,28 @@
 </div>
 </div>
 
+<div class="container justify-content-center" style="display: inline-block;">
+{%for item in posts%}
+<div class="card" style="width: 350px">
+    <div class="card-header">
+        <h1>{{item.title}}</h1>
+    </div>
+    <div class="card-body">
+        <h2 class="card-title">
+            AUTOR: {{item.username}}<br>
+            FECHA: {{item.created_at}}<br>
+        </h2>
+        <h2 class="card-body">
+            Contenido:<br>
+            {{item.content}}
+        </h2>
+
+    </div>
+
+</div>
+
+{%endfor%}
+</div>
+
+
 {% endblock %}
