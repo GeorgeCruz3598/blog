@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% block title %} Blog UPEA {% endblock %}
+
+{% block content%}
+<div class="container-fluid text-bg-dark ">
+<div class="row">
+    <div class="col-8 mt-4 mb-4"><h1 class="text-center">Bienvenido al Blog de UPEA</h1></div>
+    <div class="col-4 mt-4 text-center ">
+        <a href="{{url_for('login')}}" class="btn btn-primary" style="margin-left: 5px;">INICIAR SESION</a>
+        <a href="{{url_for('register')}}" class="btn btn-success" >REGISTRARSE</a>
+    </div>
+</div>
+</div>
+
+{% endblock %}

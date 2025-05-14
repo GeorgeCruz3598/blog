@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+{% block title %} Usuarios Registrados {% endblock %}
+{% block content%}
+
+<div class="container mt-4">
+<h2 style="display: inline-block;">Bienvenido {{username}}</h2> 
+<a href="{{url_for('logout')}}" style="position: absolute; right: 90px; font-size: large;">Salir</a>    
+</div>
+{% endblock %}
